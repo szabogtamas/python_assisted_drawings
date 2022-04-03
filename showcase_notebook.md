@@ -19,6 +19,7 @@ jupyter:
 
 ```python
 from matplotlib import pylab as plt
+from matplotlib import patches as mpl_patches
 ```
 
 ## Define artist objects
@@ -27,13 +28,14 @@ from matplotlib import pylab as plt
 class Rectangle:
 # A very most basic artist, a rectangle that will also be building block of other objects
 
-    def __init__(self, width, height, color="k", ls="-"):
+    def __init__(self, width, height, color="k", ls="-", fill=False):
         self.x = 0
         self.y = 0
-        self.w = width,
-        self.h = height,
-        self.color = color,
+        self.w = width
+        self.h = height
+        self.color = color
         self.ls = ls
+        self.fill = fill
     
     def update_positions(self, x, y):
         self.x = x
@@ -41,9 +43,9 @@ class Rectangle:
         
 
     def initialize_geometry(self):
-        p = matplotlib.patches.Rectangle(
+        p = mpl_patches.Rectangle(
             (self.x, self.y), self.w, self.h,
-            color=self.color, ls=self.ls, fill=False
+            color=self.color, ls=self.ls, fill=self.fill
         )
         return p
 
@@ -80,7 +82,7 @@ fig, ax = plt.subplots(figsize=(2, 6))
 
 ax.set_aspect("equal", adjustable="datalim")
 ax.axis('off')
-ax.plot([0, 12],[0, 0], color="white")
+ax.plot([0, 12],[-0.1, -0.1], color="white")
 
 for k, v in object_collection.items():
     v.draw(ax)
@@ -88,8 +90,4 @@ for k, v in object_collection.items():
 
 ```python
 fig.savefig("plan_example.pdf")
-```
-
-```python
-
 ```
