@@ -87,3 +87,7 @@ ax.plot([0, 12],[0, 0], color="white")
 for k, v in object_collection.items():
     ax.add_patch(v[0](*v[1:]))
 ```
+
+```python
+fig.savefig("plan_example.pdf")
+```
