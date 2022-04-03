@@ -19,54 +19,52 @@ jupyter:
 
 ```python
 from matplotlib import pylab as plt
-from matplotlib.patches import Rectangle, Circle, Polygon
 ```
 
-## Object definitions
+## Define artist objects
 
 ```python
-def draw_rectangle(x, y, w, h):
-    r = Rectangle((x, y), w, h, fill=False)
-    return r
+class Rectangle:
+# A very most basic artist, a rectangle that will also be building block of other objects
 
-def draw_circle(x, y, r):
-    r = Circle((x, y), r, fill=False)
-    return r
-```
+    def __init__(self, width, height, color="k", ls="-"):
+        self.x = 0
+        self.y = 0
+        self.w = width,
+        self.h = height,
+        self.color = color,
+        self.ls = ls
+    
+    def update_positions(self, x, y):
+        self.x = x
+        self.y = y
+        
 
-```python
-def draw_balcony(x, y):
-    dps = [
-        (0, 0),
-        (0, 5),
-        (6, 5),
-        (6, 0),
-        (2.8, 0),
-        (2.8, 0.9),
-        (1.3, 0.9),
-        (1.3, 0)
-    ]
-    r = Polygon([(dx+x, dy+y) for dx, dy in dps], fill=False)
-    return r
+    def initialize_geometry(self):
+        p = matplotlib.patches.Rectangle(
+            (self.x, self.y), self.w, self.h,
+            color=self.color, ls=self.ls, fill=False
+        )
+        return p
+
+    def draw(self, ax):
+        ax.add_patch(self.initialize_geometry())
+        return ax
 ```
 
 ## Dimensions and locations
 
 ```python
 object_collection = dict(
-    telek = [draw_rectangle, 0, 0, 12, 36],
-    haz = [draw_rectangle, 0, 0, 6, 12],
-    terasz = [draw_balcony, 0, 0],
-    fa = [draw_circle, 0, 0, 2]
+    telek = Rectangle(12, 36),
+    haz = Rectangle(6, 12)
 )
 ```
 
 ```python
 object_locations = dict(
     telek = (0, 0),
-    haz = (1, 20),
-    terasz = (1, 15),
-    fa = (6, 8)
+    haz = (1, 20)
 )
 ```
 
@@ -74,7 +72,7 @@ object_locations = dict(
 
 ```python
 for k, v in object_locations.items():
-    object_collection[k][1:3] = v
+    object_collection[k].update_positions(*v)
 ```
 
 ```python
@@ -85,9 +83,13 @@ ax.axis('off')
 ax.plot([0, 12],[0, 0], color="white")
 
 for k, v in object_collection.items():
-    ax.add_patch(v[0](*v[1:]))
+    v.draw(ax)
 ```
 
 ```python
 fig.savefig("plan_example.pdf")
+```
+
+```python
+
 ```
