@@ -28,13 +28,14 @@ from matplotlib import patches as mpl_patches
 class Rectangle:
 # A most basic artist, a rectangle that will also be building block of other objects
 
-    def __init__(self, width, height, color="k", ls="-", fill=False):
+    def __init__(self, width, height, color="k", ls="-", lw=0.1, fill=False):
         self.x = 0
         self.y = 0
         self.w = width
         self.h = height
         self.color = color
         self.ls = ls
+        self.lw = lw
         self.fill = fill
     
     def update_positions(self, x, y):
@@ -44,7 +45,7 @@ class Rectangle:
     def initialize_geometry(self):
         p = mpl_patches.Rectangle(
             (self.x, self.y), self.w, self.h,
-            color=self.color, ls=self.ls, fill=self.fill
+            color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
         )
         return p
 
@@ -59,18 +60,19 @@ class Rectangle:
 class Circle(Rectangle):
 # A primitive artist, an empty circle
 
-    def __init__(self, r, color="k", ls="-", fill=False):
+    def __init__(self, r, color="k", ls="-", lw=0.1, fill=False):
         self.x = 0
         self.y = 0
         self.r = r
         self.color = color
         self.ls = ls
+        self.lw = lw
         self.fill = fill        
 
     def initialize_geometry(self):
         p = mpl_patches.Circle(
             (self.x, self.y), self.r,
-            color=self.color, ls=self.ls, fill=self.fill
+            color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
         )
         return p
 ```
@@ -79,10 +81,11 @@ class Circle(Rectangle):
 class Polygon(Rectangle):
 # A primitive artist, a custom polygon
 
-    def __init__(self, point_aray, color="k", ls="-", fill=False):
+    def __init__(self, point_aray, color="k", ls="-", lw=0.1, fill=False):
         self.points = point_aray
         self.color = color
         self.ls = ls
+        self.lw = lw
         self.fill = fill
     
     def update_positions(self, x, y):
@@ -91,9 +94,63 @@ class Polygon(Rectangle):
     def initialize_geometry(self):
         p = mpl_patches.Polygon(
             self.points,
-            color=self.color, ls=self.ls, fill=self.fill
+            color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
         )
         return p
+```
+
+```python
+class CustomPlatform(Polygon):
+# A composite object built up of multiple primitves
+
+    def __init__(self, color="k", ls="-", lw=0.1, fill=False):
+        self.color = color
+        self.ls = ls
+        self.lw = lw
+        self.fill = fill
+        self.points = [
+            (0.2, 0.2),
+            (2.9, 0.2),
+            (0, 0),
+            (0, 5),
+            (6, 5),
+            (6, 0),
+            (2.7, 0),
+            (2.7, 1.2),
+            (1.2, 1.2),
+            (1.2, 0),
+            (1.2, 0.3),
+            (2.7, 0.3),
+            (2.7, 0.6),
+            (1.2, 0.6),
+            (1.2, 0.9),
+            (2.7, 0.9),
+            (2.7, 0)
+        ]
+            
+    
+    def update_positions(self, x, y):
+        self.points =  [(dx+x, dy+y) for dx, dy in self.points]  
+
+    def initialize_geometry(self):
+        s1 = mpl_patches.Rectangle(
+            self.points[0], 0.8, 0.8,
+            color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
+        )
+        s2 = mpl_patches.Rectangle(
+            self.points[1], 0.8, 0.8,
+            color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
+        )
+        p = mpl_patches.Polygon(
+            self.points[2:],
+            color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
+        )
+        return s1, s2, p
+
+    def draw(self, ax):
+        for p in self.initialize_geometry():
+            ax.add_patch(p)
+        return ax
 ```
 
 ## Dimensions and locations
@@ -103,7 +160,8 @@ object_collection = dict(
     telek = Polygon([(0, 0), (14, 5), (14, 39), (0, 39)]),
     haz = Rectangle(6, 12),
     fenyo = Circle(2),
-    mandula = Circle(1)
+    mandula = Circle(1),
+    terasz = CustomPlatform()
 )
 ```
 
@@ -112,7 +170,8 @@ object_locations = dict(
     telek = (0, 0),
     haz = (1, 24),
     fenyo = (4, 38),
-    mandula = (6, 12)
+    mandula = (6, 12),
+    terasz = (1, 19)
 )
 ```
 
