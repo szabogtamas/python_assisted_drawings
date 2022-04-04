@@ -40,7 +40,6 @@ class Rectangle:
     def update_positions(self, x, y):
         self.x = x
         self.y = y
-        
 
     def initialize_geometry(self):
         p = mpl_patches.Rectangle(
@@ -76,11 +75,32 @@ class Circle(Rectangle):
         return p
 ```
 
+```python
+class Polygon(Rectangle):
+# A primitive artist, a custom polygon
+
+    def __init__(self, point_aray, color="k", ls="-", fill=False):
+        self.points = point_aray
+        self.color = color
+        self.ls = ls
+        self.fill = fill
+    
+    def update_positions(self, x, y):
+        self.points =  [(dx+x, dy+y) for dx, dy in self.points]  
+
+    def initialize_geometry(self):
+        p = mpl_patches.Polygon(
+            self.points,
+            color=self.color, ls=self.ls, fill=self.fill
+        )
+        return p
+```
+
 ## Dimensions and locations
 
 ```python
 object_collection = dict(
-    telek = Rectangle(12, 36),
+    telek = Polygon([(0, 0), (12, 6), (12, 41), (0, 41)]),
     haz = Rectangle(6, 12),
     fa = Circle(2)
 )
@@ -89,8 +109,8 @@ object_collection = dict(
 ```python
 object_locations = dict(
     telek = (0, 0),
-    haz = (1, 20),
-    fa = (6, 8)
+    haz = (1, 25),
+    fa = (6, 12)
 )
 ```
 
