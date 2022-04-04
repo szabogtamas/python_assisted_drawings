@@ -26,7 +26,7 @@ from matplotlib import patches as mpl_patches
 
 ```python
 class Rectangle:
-# A very most basic artist, a rectangle that will also be building block of other objects
+# A most basic artist, a rectangle that will also be building block of other objects
 
     def __init__(self, width, height, color="k", ls="-", fill=False):
         self.x = 0
@@ -52,6 +52,28 @@ class Rectangle:
     def draw(self, ax):
         ax.add_patch(self.initialize_geometry())
         return ax
+
+# Consider using something like https://lerner.co.il/2014/01/03/making-init-methods-magical-with-autoinit/ later
+```
+
+```python
+class Circle(Rectangle):
+# A primitive artist, an empty circle
+
+    def __init__(self, r, color="k", ls="-", fill=False):
+        self.x = 0
+        self.y = 0
+        self.r = r
+        self.color = color
+        self.ls = ls
+        self.fill = fill        
+
+    def initialize_geometry(self):
+        p = mpl_patches.Circle(
+            (self.x, self.y), self.r,
+            color=self.color, ls=self.ls, fill=self.fill
+        )
+        return p
 ```
 
 ## Dimensions and locations
@@ -59,14 +81,16 @@ class Rectangle:
 ```python
 object_collection = dict(
     telek = Rectangle(12, 36),
-    haz = Rectangle(6, 12)
+    haz = Rectangle(6, 12),
+    fa = Circle(2)
 )
 ```
 
 ```python
 object_locations = dict(
     telek = (0, 0),
-    haz = (1, 20)
+    haz = (1, 20),
+    fa = (6, 8)
 )
 ```
 
@@ -82,7 +106,7 @@ fig, ax = plt.subplots(figsize=(2, 6))
 
 ax.set_aspect("equal", adjustable="datalim")
 ax.axis('off')
-ax.plot([0, 12],[-0.1, -0.1], color="white")
+ax.plot([0, 12],[-0.5, -0.5], color="white")
 
 for k, v in object_collection.items():
     v.draw(ax)
