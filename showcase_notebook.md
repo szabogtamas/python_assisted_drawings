@@ -100,17 +100,19 @@ class Polygon(Rectangle):
 
 ```python
 object_collection = dict(
-    telek = Polygon([(0, 0), (12, 6), (12, 41), (0, 41)]),
+    telek = Polygon([(0, 0), (14, 5), (14, 39), (0, 39)]),
     haz = Rectangle(6, 12),
-    fa = Circle(2)
+    fenyo = Circle(2),
+    mandula = Circle(1)
 )
 ```
 
 ```python
 object_locations = dict(
     telek = (0, 0),
-    haz = (1, 25),
-    fa = (6, 12)
+    haz = (1, 24),
+    fenyo = (4, 38),
+    mandula = (6, 12)
 )
 ```
 
