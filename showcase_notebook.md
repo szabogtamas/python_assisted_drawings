@@ -20,6 +20,15 @@ jupyter:
 ```python
 from matplotlib import pylab as plt
 from matplotlib import patches as mpl_patches
+from matplotlib import cm
+```
+
+```python
+import numpy as np
+import math
+import datetime
+
+from pysolar import solar
 ```
 
 ## Define artist objects
