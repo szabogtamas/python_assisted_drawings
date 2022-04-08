@@ -137,6 +137,21 @@ class Polygon(Rectangle):
             color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
         )
         return p
+    
+    def initialize_shadow(self):
+        pl = []
+        for i, (xp1, yp1) in enumerate(self.points):
+            xp2, yp2 = self.points[i-1]
+            p = mpl_patches.Polygon(
+                [
+                    (xp1, yp1), (xp2, yp2),
+                    self.rotate_edge((xp2, yp2+self.sun_tn), (xp2, yp2), self.sun_a),
+                    self.rotate_edge((xp1, yp1+self.sun_tn), (xp1, yp1), self.sun_a)
+                ],
+                color=self.shadow_color, fill=True, alpha=0.1
+            )
+            pl.append(p)
+        return pl
 ```
 
 ```python
