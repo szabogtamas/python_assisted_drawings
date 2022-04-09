@@ -93,6 +93,13 @@ class Rectangle:
         ax.add_patch(self.initialize_geometry())
         return ax
 
+    def draw_shadowed(self, ax):
+        for p in self.initialize_shadow():
+            ax.add_patch(p)
+        if not self.shadow_only:
+            ax.add_patch(self.initialize_geometry())
+        return ax
+
 # Consider using something like https://lerner.co.il/2014/01/03/making-init-methods-magical-with-autoinit/ later
 ```
 
