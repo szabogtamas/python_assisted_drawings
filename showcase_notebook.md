@@ -89,6 +89,45 @@ class Rectangle:
         )
         return p
 
+    def initialize_shadow(self):
+        p1 = mpl_patches.Polygon(
+            [
+                (self.x, self.y+self.h),
+                (self.x+self.w, self.y+self.h),
+                self.rotate_edge((self.x+self.w, self.y+self.h+self.sun_tn), (self.x+self.w, self.y+self.h), self.sun_a),
+                self.rotate_edge((self.x, self.y+self.h+self.sun_tn), (self.x, self.y+self.h), self.sun_a)
+            ],
+            color=self.shadow_color, fill=True, alpha=0.1
+        )
+        p2 = mpl_patches.Polygon(
+            [
+                (self.x+self.w, self.y+self.h),
+                (self.x+self.w, self.y),
+                self.rotate_edge((self.x+self.w, self.y+self.sun_tn), (self.x+self.w, self.y), self.sun_a),
+                self.rotate_edge((self.x+self.w, self.y+self.h+self.sun_tn), (self.x+self.w, self.y+self.h), self.sun_a)
+            ],
+            color=self.shadow_color, fill=True, alpha=0.1
+        )
+        p3 = mpl_patches.Polygon(
+            [
+                (self.x+self.w, self.y),
+                (self.x, self.y),
+                self.rotate_edge((self.x, self.y+self.sun_tn), (self.x, self.y), self.sun_a),
+                self.rotate_edge((self.x+self.w, self.y+self.sun_tn), (self.x+self.w, self.y), self.sun_a)
+            ],
+            color=self.shadow_color, fill=True, alpha=0.1
+        )
+        p4 = mpl_patches.Polygon(
+            [
+                (self.x, self.y+self.h),
+                (self.x, self.y),
+                self.rotate_edge((self.x, self.y+self.sun_tn), (self.x, self.y), self.sun_a),
+                self.rotate_edge((self.x, self.y+self.h+self.sun_tn), (self.x, self.y+self.h), self.sun_a)
+            ],
+            color=self.shadow_color, fill=True, alpha=0.1
+        )
+        return p1, p2, p3, p4
+
     def draw(self, ax):
         ax.add_patch(self.initialize_geometry())
         return ax
