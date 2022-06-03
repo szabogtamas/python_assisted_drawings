@@ -27,7 +27,7 @@ from matplotlib import cm
 import numpy as np
 import math
 import datetime
-
+from shapely import geometry as sg
 from pysolar import solar
 ```
 
@@ -183,6 +183,9 @@ class Polygon(Rectangle):
             color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
         )
         return p
+    
+    def area(self):
+        return sg.Polygon(self.points).area
     
     def initialize_shadow(self):
         pl = []
