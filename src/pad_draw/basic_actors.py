@@ -102,3 +102,42 @@ class Rectangle:
         if not self.shadow_only:
             ax.add_patch(self.initialize_geometry())
         return ax
+
+
+class Polygon(Rectangle):
+# A primitive artist, a custom polygon
+
+    def __init__(self, point_aray, color="k", ls="-", lw=0.1, fill=False):
+        self.points = point_aray
+        self.color = color
+        self.ls = ls
+        self.lw = lw
+        self.fill = fill
+    
+    def update_positions(self, x, y):
+        self.points =  [(dx+x, dy+y) for dx, dy in self.points]  
+
+    def initialize_geometry(self):
+        p = mpl_patches.Polygon(
+            self.points,
+            color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
+        )
+        return p
+    
+    def area(self):
+        return sg.Polygon(self.points).area
+    
+    def initialize_shadow(self):
+        pl = []
+        for i, (xp1, yp1) in enumerate(self.points):
+            xp2, yp2 = self.points[i-1]
+            p = mpl_patches.Polygon(
+                [
+                    (xp1, yp1), (xp2, yp2),
+                    self.rotate_edge((xp2, yp2+self.sun_tn), (xp2, yp2), self.sun_a),
+                    self.rotate_edge((xp1, yp1+self.sun_tn), (xp1, yp1), self.sun_a)
+                ],
+                color=self.shadow_color, fill=True, alpha=0.1
+            )
+            pl.append(p)
+        return pl
