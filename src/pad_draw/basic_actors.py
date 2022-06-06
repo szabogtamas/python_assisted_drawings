@@ -141,3 +141,56 @@ class Polygon(Rectangle):
             )
             pl.append(p)
         return pl
+    
+
+class CustomPlatform(Polygon):
+# A composite object built up of multiple primitves
+
+    def __init__(self, color="k", ls="-", lw=0.1, fill=False):
+        self.color = color
+        self.ls = ls
+        self.lw = lw
+        self.fill = fill
+        self.points = [
+            (0.2, 0.2),
+            (2.9, 0.2),
+            (0, 0),
+            (0, 5),
+            (6, 5),
+            (6, 0),
+            (2.7, 0),
+            (2.7, 1.2),
+            (1.2, 1.2),
+            (1.2, 0),
+            (1.2, 0.3),
+            (2.7, 0.3),
+            (2.7, 0.6),
+            (1.2, 0.6),
+            (1.2, 0.9),
+            (2.7, 0.9),
+            (2.7, 0)
+        ]
+            
+    
+    def update_positions(self, x, y):
+        self.points =  [(dx+x, dy+y) for dx, dy in self.points]  
+
+    def initialize_geometry(self):
+        s1 = mpl_patches.Rectangle(
+            self.points[0], 0.8, 0.8,
+            color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
+        )
+        s2 = mpl_patches.Rectangle(
+            self.points[1], 0.8, 0.8,
+            color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
+        )
+        p = mpl_patches.Polygon(
+            self.points[2:],
+            color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
+        )
+        return s1, s2, p
+
+    def draw(self, ax):
+        for p in self.initialize_geometry():
+            ax.add_patch(p)
+        return ax
