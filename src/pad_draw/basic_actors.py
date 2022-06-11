@@ -104,6 +104,116 @@ class Rectangle:
         return ax
 
 
+class Circle(Rectangle):
+# A primitive artist, an empty circle
+
+    def __init__(
+        self, r, angle=0, color="k", ls="-", lw=0.1,
+        fill=False, alpha=1, z=2, sun_h=None, sun_a=None, sun_r=None,
+        shadow_color="#D3D3D3", shadow_only=False
+    ):
+        self.x = 0
+        self.y = 0
+        self.z = z
+        self.r = r
+        self.color = color
+        self.ls = ls
+        self.lw = lw
+        self.fill = fill
+        self.shadow_color = shadow_color
+        self.shadow_only = shadow_only
+        if sun_h is None:
+            if 'SUN_ALT' in globals():
+                self.sun_h = SUN_ALT
+            else:
+                self.sun_h = 20
+        else:
+            self.sun_h = sun_h
+        self.sun_tn = self.z/math.tan(math.radians(SUN_ALT))
+        if sun_r is None:
+            if 'SUN_ROT' in globals():
+                self.sun_r = SUN_ROT
+            else:
+                self.sun_r = 20
+        else:
+            self.sun_r = sun_r
+        if sun_a is None:
+            if 'SUN_AZY' in globals():
+                self.sun_a = SUN_AZY + self.sun_r
+            else:
+                self.sun_a = 20
+        else:
+            self.sun_a = sun_a      
+
+    def initialize_geometry(self):
+        p = mpl_patches.Circle(
+            (self.x, self.y), self.r,
+            color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
+        )
+        return p
+
+    def initialize_shadow(self):
+        p1 = mpl_patches.Polygon(
+            [
+                (self.x-self.r, self.y+self.r),
+                (self.x+self.r, self.y+self.r),
+                self.rotate_edge((self.x+self.r, self.y+self.r+self.sun_tn), (self.x+self.r, self.y+self.r), self.sun_a),
+                self.rotate_edge((self.x-self.r, self.y+self.r+self.sun_tn), (self.x-self.r, self.y+self.r), self.sun_a)
+            ],
+            color=self.shadow_color, fill=True, alpha=0.1
+        )
+        p2 = mpl_patches.Polygon(
+            [
+                (self.x+self.r, self.y+self.r),
+                (self.x+self.r, self.y-self.r),
+                self.rotate_edge((self.x+self.r, self.y+self.sun_tn-self.r), (self.x+self.r, self.y-self.r), self.sun_a),
+                self.rotate_edge((self.x+self.r, self.y+self.r+self.sun_tn), (self.x+self.r, self.y+self.r), self.sun_a)
+            ],
+            color=self.shadow_color, fill=True, alpha=0.1
+        )
+        p3 = mpl_patches.Polygon(
+            [
+                (self.x+self.r, self.y-self.r),
+                (self.x-self.r, self.y-self.r),
+                self.rotate_edge((self.x-self.r, self.y+self.sun_tn-self.r), (self.x-self.r, self.y-self.r), self.sun_a),
+                self.rotate_edge((self.x+self.r, self.y+self.sun_tn-self.r), (self.x+self.r, self.y-self.r), self.sun_a)
+            ],
+            color=self.shadow_color, fill=True, alpha=0.1
+        )
+        p4 = mpl_patches.Polygon(
+            [
+                (self.x-self.r, self.y+self.r),
+                (self.x-self.r, self.y-self.r),
+                self.rotate_edge((self.x-self.r, self.y+self.sun_tn-self.r), (self.x-self.r, self.y-self.r), self.sun_a),
+                self.rotate_edge((self.x-self.r, self.y+self.r+self.sun_tn), (self.x-self.r, self.y+self.r), self.sun_a)
+            ],
+            color=self.shadow_color, fill=True, alpha=0.1
+        )
+        return p1, p2, p3, p4
+
+
+class Wedge(Rectangle):
+# A primitive artist, a half circle
+
+    def __init__(self, r, t1=0, t2=180, color="k", ls="-", lw=0.1, fill=False):
+        self.x = 0
+        self.y = 0
+        self.r = r
+        self.t1 = t1
+        self.t2 = t2
+        self.color = color
+        self.ls = ls
+        self.lw = lw
+        self.fill = fill        
+
+    def initialize_geometry(self):
+        p = mpl_patches.Wedge(
+            (self.x, self.y), self.r, self.t1, self.t2,
+            color=self.color, ls=self.ls, fill=self.fill, lw=self.lw
+        )
+        return p
+
+
 class Polygon(Rectangle):
 # A primitive artist, a custom polygon
 
