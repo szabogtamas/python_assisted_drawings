@@ -23,3 +23,28 @@ def rotate_edge(points, origin, angle):
     angle = np.deg2rad(angle)
     r = (points - origin) * np.exp(complex(0, angle)) + origin
     return (r.real, r.imag)
+
+def initialize_fib(n, cycle_limit=100):
+    # Return the previous Fibonacci number (only if it is smaller than than first few given by cycle_limit)
+    c, d = 0, True
+    a, b = 0, 1
+    while c < cycle_limit and d:
+        c += 1
+        a1 = a + 0
+        a  = b + 0
+        b = a1 + b
+        if b >= n:
+            d = False
+    return a, b
+
+def generate_fibonacci_series(start, length):
+    # Return a series of Fibonacci numbers starting from a given number
+    a, b = initialize_fib(start)
+    l = []
+    for i in range(0, length):
+        a1 = a + 0
+        a  = b + 0
+        b = a1 + b
+        l.append(a)
+        
+    return(l)
