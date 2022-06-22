@@ -49,3 +49,40 @@ def draw_fibonacci_spiral(start, N, angle=90, ax=None):
     ax.plot([0, 12],[-0.5, -0.5], color="white")
     
     return ax
+
+def draw_fibonacci_antespiral(start, N, angle=90, ax=None):
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(3.6, 4.8))
+    
+    origin = np.array([0, 0])
+    xy = np.array([0, 0])
+    a1 = 0
+    a2 = a1 + angle
+    fs = fib(start, N)
+    for i, n in enumerate(fs[N-2::-1]):
+        f2 = fs[N-i-2]
+        p = mpl_patches.Wedge(xy, n, a1, a2, color="grey", fill=True, alpha=0.3)
+        ax.add_patch(p)
+        a1 = a1 + angle
+        a2 = a2 + angle
+        slide_vector = rotate_edge((n -f2, 0), origin, a1)
+        xy = xy + slide_vector
+    
+    a1 = a1 + 180 - angle
+    a2 = a2 + 180 - angle
+    
+    xy = xy - slide_vector - np.array([2*n, 0])
+    for i, n in enumerate(fs[:-1]):
+        f2 = fs[i+1]
+        p = mpl_patches.Wedge(xy, n, a1, a2, color="grey", fill=True, alpha=0.3)
+        ax.add_patch(p)
+        a1 = a1 - angle
+        a2 = a2 - angle
+        slide_vector = rotate_edge((n - f2, 0), origin, a2)
+        xy = xy + slide_vector
+    
+    ax.set_aspect("equal", adjustable="datalim")
+    ax.axis('off')
+    ax.plot([0, 12],[-0.5, -0.5], color="white")
+    
+    return ax
