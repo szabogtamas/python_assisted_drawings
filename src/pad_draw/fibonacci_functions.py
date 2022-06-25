@@ -87,7 +87,7 @@ def draw_fibonacci_antespiral(start, N, angle=90, ax=None):
     
     return ax
 
-def draw_fibonacci_stripe(start, N, width, angle=90, start_angle=0, ax=None):
+def draw_fibonacci_stripe(start, N, width, angle=90, start_angle=0, c1="grey", c2="white", ax=None):
     if ax is None:
         fig, ax = plt.subplots(figsize=(3.6, 4.8))
     
@@ -97,11 +97,11 @@ def draw_fibonacci_stripe(start, N, width, angle=90, start_angle=0, ax=None):
     for i, n in enumerate(fs[::-1]):
         f2 = fs[N-i-2]
         a2 = start_angle + angle
-        p = mpl_patches.Wedge(xy, n, start_angle, a2, color="grey", fill=True, alpha=0.3)
+        p = mpl_patches.Wedge(xy, n, start_angle, a2, color=c1, fill=True, alpha=0.3)
         #p = mpl_patches.Wedge(xy*-1, n, start_angle, a2, color="grey", fill=True, alpha=0.3)
         ax.add_patch(p)
         #p = mpl_patches.Wedge(xy*-1, n-width, start_angle, a2, color="white", fill=True, alpha=1)
-        p = mpl_patches.Wedge(xy, n-width, start_angle, a2, color="white", fill=True, alpha=1)
+        p = mpl_patches.Wedge(xy, n-width, start_angle, a2, color=c2, fill=True, alpha=1)
         ax.add_patch(p)
         start_angle = start_angle + angle
         slide_vector = rotate_edge((n -f2, 0), origin, start_angle)
