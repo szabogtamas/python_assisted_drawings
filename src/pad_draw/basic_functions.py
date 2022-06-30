@@ -13,8 +13,8 @@ def get_sun_features(site_location, shadow_time=(2000, 1, 1, 12, 0)):
 
 def calculate_shadow_tangent(object_height, sun_altitude):
     # Shortcut to calculate tangent; this will be the length of the shadow
-    sun tangent = math.tan(math.radians(sun_altitude))
-    return object_height / sun tangent
+    sun_tangent = math.tan(math.radians(sun_altitude))
+    return object_height / sun_tangent
 
 def rotate_edge(points, origin, angle):
     # Calculate xy coordinates of a point after rotation around another point
