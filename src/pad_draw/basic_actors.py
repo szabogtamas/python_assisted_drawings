@@ -1,3 +1,8 @@
+from .basic_functions import *
+import math
+from matplotlib import pylab as plt
+from matplotlib import patches as mpl_patches
+
 class Rectangle:
 # A most basic artist, a rectangle that will also be building block of other objects
 
@@ -26,7 +31,7 @@ class Rectangle:
                 self.sun_h = 20
         else:
             self.sun_h = sun_h
-        self.sun_tn = self.z/math.tan(math.radians(SUN_ALT))
+        self.sun_tn = calculate_shadow_tangent(self.z, self.sun_h)
         if sun_r is None:
             if 'SUN_ROT' in globals():
                 self.sun_r = SUN_ROT
@@ -45,6 +50,9 @@ class Rectangle:
     def update_positions(self, x, y):
         self.x = x
         self.y = y
+    
+    def rotate_edge(self, points, origin, angle):
+        return rotate_edge(points, origin, angle)
 
     def initialize_geometry(self):
         p = mpl_patches.Rectangle(
@@ -129,7 +137,7 @@ class Circle(Rectangle):
                 self.sun_h = 20
         else:
             self.sun_h = sun_h
-        self.sun_tn = self.z/math.tan(math.radians(SUN_ALT))
+        self.sun_tn = calculate_shadow_tangent(self.z, self.sun_h)
         if sun_r is None:
             if 'SUN_ROT' in globals():
                 self.sun_r = SUN_ROT
