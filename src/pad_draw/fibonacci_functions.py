@@ -1,7 +1,7 @@
 from matplotlib import pylab as plt
 from matplotlib import patches as mpl_patches
 
-from basic_actors import rotate_edge
+from .basic_functions import rotate_edge
 
 def initialize_fib(n, cycle_limit=100):
     # Return the previous Fibonacci number (only if it is smaller than than first few given by cycle_limit)
