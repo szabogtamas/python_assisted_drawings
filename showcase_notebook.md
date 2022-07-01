@@ -24,6 +24,10 @@ from matplotlib import cm
 ```
 
 ```python
+!pip3 install shapely pysolar
+```
+
+```python
 import numpy as np
 import math
 import datetime
@@ -32,7 +36,9 @@ from pysolar import solar
 ```
 
 ```python
-sys.path.append("../src")  # developmental hack, to load the local version of the module
+import sys
+
+sys.path.append("src")  # developmental hack, to load the local version of the module
 %load_ext autoreload
 %autoreload 2
 
