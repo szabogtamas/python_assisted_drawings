@@ -88,3 +88,17 @@ for k, v in object_collection.items():
 ```python
 fig.savefig("plan_example.pdf")
 ```
+
+## Draw Fibonacci spirals
+
+```python
+fig, axs = plt.subplots(3, 2, figsize=(7.2, 9.6))
+axs = axs.flatten()
+
+experimental_axes = [15, 30, 45, 60, 90, 120]
+
+for i, e in enumerate(experimental_axes):
+    axs[i] = dr.draw_fibonacci_spiral(1, 20, e, ax=axs[i])
+
+fig.savefig("fibonacci_spirals.pdf")
+```
