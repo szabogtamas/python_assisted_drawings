@@ -36,7 +36,7 @@ def draw_fibonacci_spiral(start, N, angle=90, ax=None):
     xy = np.array([0, 0])
     a1 = 0
     a2 = a1 + angle
-    fs = fib(start, N)
+    fs = initialize_fib(start, N)
     for i, n in enumerate(fs[::-1]):
         f2 = fs[N-i-2]
         p = mpl_patches.Wedge(xy, n, a1, a2, color="grey", fill=True, alpha=0.3)
@@ -60,7 +60,7 @@ def draw_fibonacci_antespiral(start, N, angle=90, ax=None):
     xy = np.array([0, 0])
     a1 = 0
     a2 = a1 + angle
-    fs = fib(start, N)
+    fs = initialize_fib(start, N)
     for i, n in enumerate(fs[N-2::-1]):
         f2 = fs[N-i-2]
         p = mpl_patches.Wedge(xy, n, a1, a2, color="grey", fill=True, alpha=0.3)
@@ -95,7 +95,7 @@ def draw_fibonacci_stripe(start, N, width, angle=90, start_angle=0, c1="grey", c
     
     origin = np.array([0, 0])
     xy = np.array([0, 0])
-    fs = fib(start, N)
+    fs = initialize_fib(start, N)
     for i, n in enumerate(fs[::-1]):
         f2 = fs[N-i-2]
         a2 = start_angle + angle
