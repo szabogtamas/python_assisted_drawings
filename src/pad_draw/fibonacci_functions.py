@@ -113,3 +113,48 @@ def draw_fibonacci_stripe(start, N, width, angle=90, start_angle=0, c1="grey", c
     ax.axis('off')
     ax.plot([0, 12],[-0.5, -0.5], color="white")
     return ax
+
+def draw_fibo_snail_graph(pie_ranks, angle = 45, start_angle = 180, ax=None):
+
+    pie_labels = [x[0] + " " + meta_visuals[x[2]][0] for x in pie_ranks]
+    pie_colors = [meta_visuals[x[2]][1] for x in pie_ranks]
+    pie_weight = pie_ranks[:,1].astype("float64")
+    pie_weight = np.append(pie_weight, pie_weight[-2] - pie_weight[-1])
+    
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4.8, 3.6))
+
+    origin = np.array([0, 0])    
+    text_origin = np.array([0, 0])
+    xy = np.array([0, 0])
+    a1 = start_angle - angle
+    a2 = a1 + angle
+
+
+    for i, n in enumerate(pie_weight[:-1]):
+        f2 = pie_weight[i+1]
+        slide_vector = rotate_edge((0, n-f2), origin, a1-90)
+        inside_vector = rotate_edge((-f2/2, f2), origin, a1-90)
+        p = mpl_patches.Wedge(xy, n, a1, a2, color=pie_colors[i], fill=True, alpha=1)
+        ax.add_patch(p)
+        if i < 4:
+            text_xy = xy + rotate_edge((0, n+2), origin, a1-90+(angle/2))
+            ax.text(
+                text_xy[0], text_xy[1], pie_labels[i], rotation=a1-90+(angle/2),
+                horizontalalignment='center', verticalalignment='center'
+            )
+            text_origin = xy + rotate_edge((0, n), origin, a1-90)
+        else:
+            ax.annotate(
+                pie_labels[i].replace("\n", ""), xy=xy + inside_vector,  xycoords='data', xytext=text_origin + (2, 14-5*i), textcoords='data',
+                arrowprops=dict(facecolor='black', arrowstyle='-', linewidth=0.5), rotation=0,
+                horizontalalignment='left', verticalalignment='bottom'
+            )
+        a1 = a1 - angle
+        a2 = a2 - angle
+        xy = xy + slide_vector
+
+    ax.set_aspect("equal", adjustable="datalim")
+    ax.axis('off')
+    ax.plot([0, 12],[-0.5, -0.5], color="white")
+    return ax
