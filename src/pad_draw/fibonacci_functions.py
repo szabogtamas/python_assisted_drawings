@@ -115,6 +115,7 @@ def draw_fibonacci_stripe(start, N, width, angle=90, start_angle=0, c1="grey", c
     return ax
 
 def draw_fibo_snail_graph(pie_ranks, angle = 45, start_angle = 180, ax=None):
+    # Plot some data like a pie-chart, but not adding up into a circle
 
     pie_labels = [x[0] + " " + meta_visuals[x[2]][0] for x in pie_ranks]
     pie_colors = [meta_visuals[x[2]][1] for x in pie_ranks]
