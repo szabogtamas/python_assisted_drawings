@@ -48,6 +48,10 @@ import pad_draw as dr
 ## Dimensions and locations
 
 ```python
+figure_folder = "../figures"
+```
+
+```python
 object_collection = dict(
     telek = dr.Polygon([(0, 0), (14, 5), (14, 39), (0, 39)]),
     haz = dr.Rectangle(6, 12),
@@ -100,5 +104,5 @@ experimental_axes = [15, 30, 45, 60, 90, 120]
 for i, e in enumerate(experimental_axes):
     axs[i] = dr.draw_fibonacci_spiral(1, 20, e, ax=axs[i])
 
-fig.savefig("fibonacci_spirals.pdf")
+fig.savefig(figure_folder + "/fibonacci_spirals.pdf")
 ```
