@@ -264,30 +264,34 @@ class Polygon(Rectangle):
 class CustomPlatform(Polygon):
 # A composite object built up of multiple primitves
 
-    def __init__(self, color="k", ls="-", lw=0.1, fill=False):
+    def __init__(self, points=None, color="k", ls="-", lw=0.1, fill=False):
         self.color = color
         self.ls = ls
         self.lw = lw
         self.fill = fill
-        self.points = [
-            (0.2, 0.2),
-            (2.9, 0.2),
-            (0, 0),
-            (0, 5),
-            (6, 5),
-            (6, 0),
-            (2.7, 0),
-            (2.7, 1.2),
-            (1.2, 1.2),
-            (1.2, 0),
-            (1.2, 0.3),
-            (2.7, 0.3),
-            (2.7, 0.6),
-            (1.2, 0.6),
-            (1.2, 0.9),
-            (2.7, 0.9),
-            (2.7, 0)
-        ]
+        if points is None:
+            self.points = [
+                (0.2, 0.2),
+                (2.9, 0.2),
+                (0, 0),
+                (0, 5),
+                (6, 5),
+                (6, 0),
+                (2.7, 0),
+                (2.7, 1.2),
+                (1.2, 1.2),
+                (1.2, 0),
+                (1.2, 0.3),
+                (2.7, 0.3),
+                (2.7, 0.6),
+                (1.2, 0.6),
+                (1.2, 0.9),
+                (2.7, 0.9),
+                (2.7, 0)
+            ]
+        else:
+            self.points = points
+
             
     
     def update_positions(self, x, y):
